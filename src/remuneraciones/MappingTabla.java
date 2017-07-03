@@ -47,6 +47,7 @@ public class MappingTabla extends javax.swing.JFrame {
     String fechaForm="01/2017";
     int empresaForm=0;
     String procesoForm;
+    GetData getData=new GetData();
      private JTextField filename = new JTextField(), dir = new JTextField();
     
     
@@ -56,8 +57,8 @@ public class MappingTabla extends javax.swing.JFrame {
      */
     public MappingTabla() {
         initComponents();
-        jButton1.setVisible(false);
-        jComboBox4.setVisible(false);
+       // jButton1.setVisible(false);
+       // jComboBox4.setVisible(false);
         processMannager.cargaRegistros(); // fileMannager lee los registros
         llenarTabla();
         postInit();
@@ -360,6 +361,9 @@ public class MappingTabla extends javax.swing.JFrame {
              processMannager.getVarFicha(mappingVars.getTextFieldValueString());
              processMannager.añadeDiffRel();
              processMannager.exportarRegistros(processMannager.registrosDiferencia, filepath,"registrosDiferencia");
+             processMannager.generaLog(procesoForm);
+            
+             
              
              
             }
