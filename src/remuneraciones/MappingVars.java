@@ -10,6 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
  
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -35,7 +37,6 @@ public class MappingVars extends JFrame {
      JTextField textUsername = new JTextField(20);
     JPasswordField fieldPassword = new JPasswordField(20);
     JButton button1 = new JButton("Mapear Variables");
-    
     JLabel[] jlabels;
      JTextField[]  jtext;
      
@@ -140,6 +141,20 @@ public class MappingVars extends JFrame {
 return textFields;
 
 }
+     
+     public String getTextFieldValueString(){
+        
+         String[] textFieldValues=getTextFieldValue();
+         List<String> textvar= new ArrayList();
+         for(String value:textFieldValues){
+             if (!value.equals(""))
+                 textvar.add(value);
+         }
+         
+         
+         return "'"+String.join("','", textvar)+"'";
+         
+     }
      
     public static void main(String[] args) {
 //        // set look and feel to the system look and feel
