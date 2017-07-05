@@ -173,18 +173,20 @@ public class GetData extends Dao  {
 //    }
 //    
           
-      
+           public int InsertTransac( String proceso,int empresa,String fecha,String path, String nombreArch){
           
-          public List<Registro> InsertTransac(List<Registro> listaReg, String Proceso,int idTransact){
+             
+            Integer idTransac= this.getMaxTrasac();
+       
+                
+                 
           
-              
-              
-               String ProcesoBD="";
-          switch(Proceso){
-              case "Liquidaciones": ProcesoBD="L";
-              case "Reliquidaciones": ProcesoBD="R";
-              
-          }
+//               String ProcesoBD="";
+//          switch(Proceso){
+//              case "Liquidaciones": ProcesoBD="L";
+//              case "Reliquidaciones": ProcesoBD="R";
+//              
+//          }
               
         PreparedStatement stmt = null;      
       List<Registro> lista= new ArrayList();   
@@ -196,13 +198,13 @@ public class GetData extends Dao  {
         
       //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
             // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
-                String queryString = "Insert into [Inteligencias_transac].[dbo].[RRHH_Archivos_Rem]  \n" +
-"      ([ID_TRANSAC],[PROCESO]\n" +
+                String queryString = "Insert into [Inteligencias_transac].[dbo].[RRHH_Transac] \n" +
+"      ([ID_TRANSAC]\n" +
 "      ,[FECHA_TRANSAC]\n" +
 "      ,[FECHA_DATOS]\n" +
-"      ,[FICHA]\n" +
-"      ,[VARIABLE_CODI]\n" +
-"      ,[VARIABLE_MONTO]"+
+"      ,[NOMBRE_ARCHIVO]\n" +
+"      ,[RUTA_ARCHIVO]"+
+"      ,[PROCESO]"+
 "       ,[EMP_CODI])"
                         
         + "Values (?,?,?,?,?,?,?)  ";
@@ -214,32 +216,25 @@ public class GetData extends Dao  {
           
           stmt = this.con.prepareStatement(queryString);
             
-            int i=0;
-
-            for (Registro reg:listaReg) {
-               stmt.setInt(1, idTransact);
-                stmt.setString(2, ProcesoBD);
-               stmt.setTimestamp(3,timestamp);
-               stmt.setString(4, reg.getFecha());
-                stmt.setString(5,reg.getFicha());
-              stmt.setString(6,reg.getVariable());
-              stmt.setString(7,reg.getValor());
-              stmt.setInt(8,reg.getEmpresa());
        
-          stmt.addBatch();
-          i++;
-          if (i % 100 == 0 || i == listaReg.size()) {
-                stmt.executeBatch(); // Execute every 100 items.
-            }
-                
-        
-            } 
+               stmt.setInt(1, idTransac);
+                stmt.setTimestamp(2, timestamp);
+               stmt.setString(3,fecha);
+               stmt.setString(4,nombreArch);
+                stmt.setString(5,path);
+              stmt.setString(6,proceso);
+              stmt.setInt(7,empresa);
 
-  
-     
+             stmt.execute();
             System.out.println("Insert Ok");
 
          } catch (SQLException e) {
+                  System.out.println("SQLState: "
+                    + e.getSQLState());
+            System.out.println("SQLErrorCode: "
+                    + e.getErrorCode());
+            e.printStackTrace();
+                
            
         }  finally {
             try {
@@ -256,6 +251,101 @@ public class GetData extends Dao  {
                     con = null;
                 }
             } catch (SQLException e) {
+               
+            }
+        }
+    
+     return idTransac;
+    }   
+          
+      
+          
+          public List<Registro> InsertArchivosTransac(List<Registro> listaReg, String Proceso,int idTransact){
+          
+              
+              
+//               String ProcesoBD="";
+//          switch(Proceso){
+//              case "Liquidaciones": ProcesoBD="L";
+//              case "Reliquidaciones": ProcesoBD="R";
+//              
+//          }
+              
+        PreparedStatement stmt = null;      
+      List<Registro> lista= new ArrayList();   
+    try{
+           
+   
+        this.Conectar();
+      
+        
+      //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
+            // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
+                String queryString = "Insert into [Inteligencias_transac].[dbo].[RRHH_Archivos_Rem]  \n" +
+"      ([ID_TRANSAC],[PROCESO]\n" +
+"      ,[FECHA_DATOS]\n" +
+"      ,[FICHA]\n" +
+"      ,[VARIABLE_CODI]\n" +
+"      ,[VARIABLE_MONTO]"+
+"       ,[EMP_CODI])"
+                        
+        + "Values (?,?,?,?,?,?,?)  ";
+                
+         //   Calendar cal = Calendar.getInstance(); 
+         //  java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());              
+                
+          // System.out.println(queryString);
+          
+          stmt = this.con.prepareStatement(queryString);
+            
+            int i=0;
+
+            for (Registro reg:listaReg) {
+               stmt.setInt(1, idTransact);
+                stmt.setString(2, Proceso);
+               stmt.setString(3, reg.getFecha());
+                stmt.setString(4,reg.getFicha());
+              stmt.setString(5,reg.getVariable());
+              stmt.setString(6,reg.getValor());
+              stmt.setInt(7,reg.getEmpresa());
+       
+          stmt.addBatch();
+          i++;
+          if (i % 100 == 0 || i == listaReg.size()) {
+                stmt.executeBatch(); // Execute every 100 items.
+            }
+                
+        
+            } 
+
+  
+     
+            System.out.println("Insert Ok");
+
+         } catch (SQLException e) {
+                  System.out.println("SQLState: "
+                    + e.getSQLState());
+            System.out.println("SQLErrorCode: "
+                    + e.getErrorCode());
+            e.printStackTrace();
+                
+           
+        }  finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                    rs = null;
+                }
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+                if (con != null) {
+                    con.close();
+                    con = null;
+                }
+            } catch (SQLException e) {
+               
             }
         }
     
@@ -281,7 +371,7 @@ public class GetData extends Dao  {
         stmt = this.con.createStatement();
       //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
             // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
-                String queryString = "select (max(ID_TRANSAC)+1) as ID from [Inteligencias_transac].[dbo].[RRHH_Archivos_Rem]";
+                String queryString = "select (max(ID_TRANSAC)+1) as ID from [Inteligencias_transac].[dbo].[RRHH_Transac]";
                 
           // System.out.println(queryString);
             
@@ -289,7 +379,12 @@ public class GetData extends Dao  {
       rs = stmt.executeQuery(queryString);      
             
             while (rs.next()) {
+                if (rs.getObject(1)!=null){
              idTransact=Integer.parseInt(rs.getObject(1).toString());
+                }else{
+                    return 1;
+                }
+                
                
             } 
 

@@ -140,12 +140,13 @@ public class ProcessMannager extends FileMannager{
         }   
               
     
-      public void generaLog(String procesoForm){
-          
-       int id=  this.getdata.getMaxTrasac();
-         this.getdata.InsertTransac(registrosDiferencia,"RegDiff",id);
-         this.getdata.InsertTransac(registros,"RegArchivo",id);
-         this.getdata.InsertTransac(registrosReliq,"RegBD",id);
+      public void generaLog(String procesoForm,int empresa,String fecha,String path, String nombreArch){
+         
+     //  int id=  this.getdata.getMaxTrasac();
+       int id=getdata.InsertTransac(procesoForm, empresa,fecha,path,nombreArch);
+         this.getdata.InsertArchivosTransac(registrosDiferencia,"RegDiff",id);
+         this.getdata.InsertArchivosTransac(registros,"RegArchivo",id);
+         this.getdata.InsertArchivosTransac(registrosReliq,"RegBD",id);
           
       }
     
