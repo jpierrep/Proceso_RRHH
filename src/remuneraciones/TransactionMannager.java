@@ -34,6 +34,7 @@ public class TransactionMannager extends FileMannager {
         listReg=getData.getDiffLiquido(transaction);
 
         return listReg;
+        
     }
     
     

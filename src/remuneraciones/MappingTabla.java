@@ -48,6 +48,7 @@ public class MappingTabla extends javax.swing.JFrame {
     int empresaForm=0;
     String procesoForm;
      private JTextField filename = new JTextField(), dir = new JTextField();
+     Transacciones transacciones=new Transacciones();
     
     
     
@@ -238,7 +239,7 @@ public class MappingTabla extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+  transacciones.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

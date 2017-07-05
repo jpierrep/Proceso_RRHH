@@ -509,6 +509,8 @@ public class GetData extends Dao  {
                  
           
            public List<Registro> getDiffLiquido(int idTransac) {
+               
+               System.out.println("obtener transaccion"+idTransac);
        
           
         List<Registro> lista=new ArrayList<>();
@@ -535,7 +537,7 @@ public class GetData extends Dao  {
 "      ,convert(int,est.VARIABLE_MONTO)-convert(float,trans.VARIABLE_MONTO) as DIFERENCIA\n" +
 "  FROM [Inteligencias_transac].[dbo].[RRHH_Archivos_Rem] as trans --where id_transac=2 and variable_codi='H303' \n" +
 "  \n" +
-"  left join inteligencias.dbo.RRHH_ESTRUCTURA_SUELDO as est on trans.ficha collate SQL_Latin1_General_CP1_CI_AI=est.ficha and trans.emp_codi=est.emp_codi \n" +
+"  inner join inteligencias.dbo.RRHH_ESTRUCTURA_SUELDO as est on trans.ficha collate SQL_Latin1_General_CP1_CI_AI=est.ficha and trans.emp_codi=est.emp_codi \n" +
 "  and est.fecha=right(fecha_datos,4)+left(fecha_datos,2)+'01'  and trans.variable_codi collate SQL_Latin1_General_CP1_CI_AI=est.variable_codi\n" +
 "  \n" +
 "  \n" +
