@@ -22,6 +22,8 @@ public class Registro implements Serializable{
     private String valor;
     private String ficha;
     private String proceso;
+    private String valorAnterior;
+    private String valorDiferencia;
 
     public Registro(String fecha, int empresa, String variable, String valor, String ficha) {
         this.fecha = fecha;
@@ -107,7 +109,27 @@ public class Registro implements Serializable{
     public void setProceso(String proceso) {
         this.proceso = proceso;
     }
+
+    public String getValorAnterior() {
+        return valorAnterior;
+    }
+
+    public void setValorAnterior(String valorAnterior) {
+        this.valorAnterior = valorAnterior;
+    }
+
+    public String getValorDiferencia() {
+        return valorDiferencia;
+    }
+
+    public void setValorDiferencia(String valorDiferencia) {
+        this.valorDiferencia = valorDiferencia;
+    }
+
+ 
     
             
+    
+    
     
 }

@@ -6,13 +6,22 @@
 package Dao;
 
 import Model.Registro;
+import Model.Transaccion;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -413,4 +422,183 @@ public class GetData extends Dao  {
      return idTransact;
     }  
           
+          
+          
+          
+           public List<Transaccion> getTransacciones(int empresa) {
+       
+          
+        List<Transaccion> lista=new ArrayList<>();
+              
+        Statement stmt = null;
+        ResultSet rs = null;      
+      
+    try{
+           
+   
+        this.Conectar();
+      
+        stmt = this.con.createStatement();
+      //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
+            // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
+                String queryString = "SELECT [ID_TRANSAC]\n" +
+"      ,[FECHA_TRANSAC]\n" +
+"      ,[FECHA_DATOS]\n" +
+"      ,[EMP_CODI]\n" +
+"      ,[NOMBRE_ARCHIVO]\n" +
+"      ,[RUTA_ARCHIVO]\n" +
+"      ,[PROCESO]\n" +
+"      ,[USER_ID]\n" +
+"  FROM [Inteligencias_transac].[dbo].[RRHH_Transac] where EMP_CODI="+empresa+"";
+                
+          // System.out.println(queryString);
+            
+            
+      rs = stmt.executeQuery(queryString);      
+            
+            while (rs.next()) {
+               
+            int idTransact=Integer.parseInt(rs.getObject(1).toString());
+             
+          //  DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh.mm.ss");
+          // Calendar cal = Calendar.getInstance(); 
+          // java.sql.Timestamp parsedDate = new java.sql.Timestamp(cal.getTimeInMillis());  
+//            try {
+//               parsedDate = (Timestamp) df.parse(rs.getObject(2).toString());
+//            } catch (ParseException ex) {
+//                Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+             java.sql.Timestamp parsedDate= java.sql.Timestamp.valueOf( rs.getObject(2).toString()) ;
+               String fechaDatos=rs.getObject(3).toString();
+               String nombreArch=rs.getObject(5).toString();
+               String rutaArch=rs.getObject(6).toString();
+                String proceso=rs.getObject(7).toString();
+                Transaccion transac=new Transaccion(idTransact, parsedDate, fechaDatos, empresa, nombreArch, rutaArch, proceso);
+                lista.add(transac);
+ 
+   
+            } 
+
+      //    System.out.println("idTransact"+idTransact);
+
+         } catch (SQLException e) {
+           
+        }  finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                    rs = null;
+                }
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+                if (con != null) {
+                    con.close();
+                    con = null;
+                }
+            } catch (SQLException e) {
+            }
+        }
+    
+     return lista;
+    } 
+           
+           
+           
+                 
+          
+           public List<Registro> getDiffLiquido(int idTransac) {
+       
+          
+        List<Registro> lista=new ArrayList<>();
+              
+        Statement stmt = null;
+        ResultSet rs = null;      
+      
+    try{
+           
+   
+        this.Conectar();
+      
+        stmt = this.con.createStatement();
+      //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
+            // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
+                String queryString = "SELECT  [ID_TRANSAC]\n" +
+"      ,[PROCESO]\n" +
+"      ,[FECHA_DATOS]\n" +
+"      ,trans.[FICHA]\n" +
+"      ,trans.[VARIABLE_CODI]\n" +
+"      ,trans.[VARIABLE_MONTO] as LIQU_ANTES_REL\n" +
+"      ,est.[VARIABLE_MONTO]  as LIQU_DESPUES_REL\n" +
+"      ,trans.[EMP_CODI]\n" +
+"      ,convert(int,est.VARIABLE_MONTO)-convert(float,trans.VARIABLE_MONTO) as DIFERENCIA\n" +
+"  FROM [Inteligencias_transac].[dbo].[RRHH_Archivos_Rem] as trans --where id_transac=2 and variable_codi='H303' \n" +
+"  \n" +
+"  left join inteligencias.dbo.RRHH_ESTRUCTURA_SUELDO as est on trans.ficha collate SQL_Latin1_General_CP1_CI_AI=est.ficha and trans.emp_codi=est.emp_codi \n" +
+"  and est.fecha=right(fecha_datos,4)+left(fecha_datos,2)+'01'  and trans.variable_codi collate SQL_Latin1_General_CP1_CI_AI=est.variable_codi\n" +
+"  \n" +
+"  \n" +
+"  where trans.[VARIABLE_CODI]='H303'  and trans.ID_TRANSAC="+idTransac+"";
+                
+          // System.out.println(queryString);
+            
+            
+      rs = stmt.executeQuery(queryString);      
+            
+            while (rs.next()) {
+               
+
+               String fechaDatos=rs.getObject(3).toString();
+               String ficha=rs.getObject(4).toString();
+               String varCodi=rs.getObject(5).toString();
+               String valorAnterior=rs.getObject(6).toString();
+               String valorActual=rs.getObject(7).toString();
+               int empresa=Integer.parseInt(rs.getObject(8).toString());
+               String valorDiferencia=rs.getObject(9).toString();
+               
+                Registro reg= new Registro(fechaDatos,empresa,varCodi,valorActual,ficha);
+                reg.setValorAnterior(valorAnterior);
+                reg.setValorDiferencia(valorDiferencia);
+                lista.add(reg);
+ 
+   
+            } 
+
+      //    System.out.println("idTransact"+idTransact);
+
+         } catch (SQLException e) {
+           
+        }  finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                    rs = null;
+                }
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+                if (con != null) {
+                    con.close();
+                    con = null;
+                }
+            } catch (SQLException e) {
+            }
+        }
+    
+     return lista;
+    } 
+           
+           
+           
+           
+           
+           
+           
+           
+          
 }
+
+
+ 

@@ -5,6 +5,22 @@
  */
 package remuneraciones;
 
+import EditorComponents.ButtonRenderer;
+import EditorComponents.ButtonEditor;
+import Model.Transaccion;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jpierre
@@ -14,8 +30,25 @@ public class Transacciones extends javax.swing.JFrame {
     /**
      * Creates new form Transacciones
      */
+    TransactionMannager transactionMannager=new TransactionMannager();
+    
+    
     public Transacciones() {
-        initComponents();
+     
+  //       super( "JButtonTable Example" );
+    initComponents();
+    
+    llenarTabla();
+//    DefaultTableModel dm = new DefaultTableModel();
+//    dm.setDataVector(new Object[][]{{"button 1","foo"},
+//                                    {"button 2","bar"}},
+//                     new Object[]{"Button","String"});
+//                      
+//    jTable1.setModel(dm);
+//    jTable1.getColumn("Button").setCellRenderer(new ButtonRenderer());
+//    jTable1.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+       
     }
 
     /**
@@ -50,15 +83,16 @@ public class Transacciones extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addGap(64, 64, 64)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(208, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 25, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         pack();
@@ -103,4 +137,42 @@ public class Transacciones extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+
+     public void llenarTabla(){
+    
+
+           String[] titulos={"Nº Transacción","Fecha Datos","Nombre Archivo","Fecha Trans","Proceso","Button"}; 
+           String[] datos= new String[6]; 
+       DefaultTableModel tableModel = new DefaultTableModel(null, titulos); 
+         List<Transaccion> listTrans=transactionMannager.getTransacciones(0);
+        int i=1;
+        for (Transaccion trans: listTrans){
+            datos[0]=Integer.toString(trans.getIdTransac());
+            datos[1]=trans.getFechaDatos();
+            datos[2]=trans.getNombreArchivo();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+          String fechatrans  = dateFormat.format(trans.getFechaTransac());
+            
+            datos[3]= fechatrans;
+            datos[4]= trans.getProceso();
+            //datos[5]="boton"+i;
+            datos[5]=Integer.toString(trans.getIdTransac());
+          //  System.out.println("datos"+datos[0]);
+            
+          tableModel.addRow(datos);
+           
+            i++;
+            
+        }
+         
+            jTable1.setModel(tableModel);
+             jTable1.getColumn("Button").setCellRenderer(new ButtonRenderer());
+             jTable1.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+        
+     }
+    
+    
+    
+    
 }
