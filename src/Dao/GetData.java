@@ -595,7 +595,75 @@ public class GetData extends Dao  {
            
            
            
+          public boolean existsVariable(int empresa,String variable) {
+       
+           String empSoftland="";   
+                           switch (empresa){
+                               case 0:empSoftland="GUARD";
+                               break;
+                                case 1:empSoftland="TECNOLOGIASSA";
+                               break;
+                               case 2:empSoftland="OUTSOURCINGSA";
+                               break;
+                               case 3:empSoftland="ODINLTDA";
+                               break;
+
+                           } 
+              
+              
+        boolean exists=false;
+              
+        Statement stmt = null;
+        ResultSet rs = null;      
+      
+    try{
            
+   
+        this.Conectar();
+      
+        stmt = this.con.createStatement();
+      //      rs = stmt.executeQuery("SELECT idTest FROM relato WHERE test_idTest ='"+rutExaminado+"' ORDER BY idTest ASC");
+            // rs = stmt.executeQuery("SELECT idRelato FROM relato WHERE test_idTest =511");
+                String queryString = "SELECT codVariable\n" +
+"  FROM "+empSoftland+".[softland].[sw_variable]  where codVariable='"+variable+"'";
+                
+          // System.out.println(queryString);
+            
+            
+      rs = stmt.executeQuery(queryString);      
+            
+            while (rs.next()) {
+               
+          return true;
+   
+            } 
+
+      //    System.out.println("idTransact"+idTransact);
+
+         } catch (SQLException e) {
+           
+        }  finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                    rs = null;
+                }
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+                if (con != null) {
+                    con.close();
+                    con = null;
+                }
+            } catch (SQLException e) {
+            }
+        }
+    
+     return exists;
+    } 
+           
+              
            
            
            

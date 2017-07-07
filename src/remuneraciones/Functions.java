@@ -31,4 +31,28 @@ public class Functions {
    }
  }
     
+         
+         public String getNombreEmpresa(int empresa){
+             
+            
+              
+                           //genera statement para la ficha si es administrativo o no
+        String empSoftland="";   
+                           switch (empresa){
+                               case 0:empSoftland="GS Seguridad S.A.";
+                               break;
+                                case 1:empSoftland="GS Tecnologías S.A.";
+                               break;
+                               case 2:empSoftland="GS OutSourcing S.A.";
+                               break;
+                               case 3:empSoftland="Odin Ltda.";
+                               break;
+
+                           } 
+                           
+                           return empSoftland;
+             
+         }
+         
+         
 }

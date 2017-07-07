@@ -290,6 +290,8 @@ public class FileMannager {
        
         for(Registro reg:registros){
            reg.setVariable(variable);
+        // imprimimos en valor el campo con la diferencia
+           reg.setValor(reg.getValorDiferencia());
        }
         
         

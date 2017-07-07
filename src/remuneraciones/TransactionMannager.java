@@ -37,7 +37,10 @@ public class TransactionMannager extends FileMannager {
         
     }
     
-    
+    public boolean existsVariable(int empresa,String variable){
+     return   getData.existsVariable(empresa, variable);
+        
+    }   
     
     
 }

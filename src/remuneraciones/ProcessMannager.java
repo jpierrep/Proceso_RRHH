@@ -55,7 +55,7 @@ public class ProcessMannager extends FileMannager{
         
       cargaDistinctFichas();
         
-      //  for(String ficha:distinctFichas){ // por cada ficha carga las variables
+           //  for(String ficha:distinctFichas){ // por cada ficha carga las variables
        //       List<Registro> regFicha=getdata.getVarFichaMes(fecha, variables,ficha, empresa);
 
            //   List<Registro> regTemp= new ArrayList<>(registrosReliq);
@@ -65,10 +65,25 @@ public class ProcessMannager extends FileMannager{
            
         
            registrosReliq=getdata.getVarFichaMes(fecha, variables, empresa);
-        
-        
- 
-        
+           
+           List<Registro> regFicha=new ArrayList<>();
+            List<Registro> regTemp= new ArrayList<>();
+              for(String ficha:distinctFichas){ // por cada ficha carga las variables
+             regFicha=buscaRegistrosFicha(ficha);
+
+             //List<Registro> regTemp= new ArrayList<>(regFicha);
+            regTemp.addAll(regFicha);
+             
+           
+              }
+       //registros de la base de datos, que hay que comparar con lo del archivo 
+              registrosReliq=regTemp;
+              
+              for (Registro register:registrosReliq){
+                  System.out.println("Registro "+register.getFicha() + "Variable "+register.getVariable()+" Valor"+register.getValor());
+                  
+              }
+
     }
     
     
@@ -138,6 +153,21 @@ public class ProcessMannager extends FileMannager{
             return list;
             
         }   
+         
+         
+               public List<Registro> buscaRegistrosFicha(String ficha){
+           // List<Registro> list= registrosReliq.stream().filter(a -> Objects.equals(a.getFicha()+a.getVariable(),"CONTRAVA01P050")).collect(Collectors.toList());
+            
+          List<Registro> list= registrosReliq.stream().filter(a -> Objects.equals(a.getFicha(),ficha)).collect(Collectors.toList());
+
+           System.out.println("dentro busca");
+            for(Registro reg: list){
+                System.out.println(reg.getFicha()+" "+reg.getValor());
+            }
+            
+            return list;
+            
+        }  
               
     
       public void generaLog(String procesoForm,int empresa,String fecha,String path, String nombreArch){

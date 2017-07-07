@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.*;
 import remuneraciones.FileMannager;
+import remuneraciones.Functions;
 import remuneraciones.MappingTabla;
 import remuneraciones.TransactionMannager;
   
@@ -35,6 +36,7 @@ public class ButtonEditor extends DefaultCellEditor {
   private  TransactionMannager transactionMannager=new TransactionMannager();
    private JTextField filename = new JTextField(), dir = new JTextField();
    private static ButtonEditor instance = null;
+   private Functions functions=new Functions();
 
 
           
@@ -77,6 +79,8 @@ public class ButtonEditor extends DefaultCellEditor {
      //  System.out.println(label + ": Ouch!");
        
        List<Registro> listRegDiff=transactionMannager.getLiquidoTransacciones(Integer.parseInt(label));
+       
+       
        
        JTable tabla= new JTable();
        
@@ -129,7 +133,14 @@ public class ButtonEditor extends DefaultCellEditor {
      btn.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
      
-       
+       if(txtF.getText().equals(" ")||txtF.getText().equals("")){
+               JOptionPane.showMessageDialog(null, "Ingrese la variable a cargar.\n ","Error",JOptionPane.ERROR_MESSAGE);
+               txtF.setBorder(BorderFactory.createLineBorder(Color.red)); 
+       }else if (!transactionMannager.existsVariable(listRegDiff.get(0).getEmpresa(), txtF.getText().trim())){
+            JOptionPane.showMessageDialog(null, "La variable "+txtF.getText().trim()+" no existe en Empresa "+functions.getNombreEmpresa(listRegDiff.get(0).getEmpresa())+" favor ingresarla a Softland con anterioridad.\n ","Error",JOptionPane.ERROR_MESSAGE);
+             txtF.setBorder(BorderFactory.createLineBorder(Color.red));  
+       }else{
+           txtF.setBorder(BorderFactory.createLineBorder(Color.gray));  
             JFileChooser c = new JFileChooser();
       //disableTextField(c);
       c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -157,8 +168,8 @@ public class ButtonEditor extends DefaultCellEditor {
               JOptionPane.showMessageDialog(null, "Error al generar archivo.\n "+ ex.toString());
         }
        }
-          
       }
+     }
     });
      
       btnPnl.add(new JLabel("Variable Diferencia Montos: "));
@@ -185,6 +196,7 @@ public class ButtonEditor extends DefaultCellEditor {
        
        
     }
+             
     isPushed = false;
     return new String( label ) ;
   }
