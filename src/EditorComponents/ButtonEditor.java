@@ -13,6 +13,7 @@ import Model.Registro;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.*;
 import remuneraciones.FileMannager;
+import remuneraciones.MappingTabla;
 import remuneraciones.TransactionMannager;
   
 /**
@@ -31,6 +33,9 @@ public class ButtonEditor extends DefaultCellEditor {
   private boolean   isPushed;
   private int transaction;
   private  TransactionMannager transactionMannager=new TransactionMannager();
+   private JTextField filename = new JTextField(), dir = new JTextField();
+   private static ButtonEditor instance = null;
+
 
           
  
@@ -58,8 +63,9 @@ public class ButtonEditor extends DefaultCellEditor {
       button.setBackground(table.getBackground());
     }
     label = (value ==null) ? "" : value.toString();
-    button.setText( "Archivo" );
+    button.setText( "Mostrar" );
     isPushed = true;
+    //System.out.println("hola");
     return button;
   }
   
@@ -76,34 +82,106 @@ public class ButtonEditor extends DefaultCellEditor {
        
       //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       tabla.setSize(500,500);
-       tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+       String[] titulos={"IdTransac","Fecha","Ficha","Variable","Valor Anterior","Valor Nuevo","Diferencia"}; 
+            String[] datos= new String[7]; 
+        DefaultTableModel tableModel= new DefaultTableModel(null, titulos); 
+        NumberFormat nf = NumberFormat.getInstance();
+        for (Registro reg: listRegDiff){
+            datos[0]=label;
+            datos[1]=reg.getFecha();
+            datos[2]=reg.getFicha();
+            
+            datos[3]=reg.getVariable();
+            datos[4]= nf.format(Float.parseFloat(reg.getValorAnterior()));
+            datos[5]=  nf.format(Float.parseFloat(reg.getValor()));
+            datos[6]= nf.format(Float.parseFloat(reg.getValorDiferencia()));
+          //  System.out.println("datos"+datos[0]);
+            
+           tableModel.addRow(datos);
+        }
+            tabla.setModel(tableModel);
+      
+      
+      
+//      tabla.setModel(new javax.swing.table.DefaultTableModel(
+//            new Object [][] {
+//                {null, null, null, null},
+//                {null, null, null, null},
+//                {null, null, null, null},
+//                {null, null, null, null}
+//            },
+//            new String [] {
+//                "Title 1", "Title 2", "Title 3", "Title 4"
+//            }
+//        ));
      
 
-    JFrame frame = new JFrame();
+
+
+
+    
+    JPanel btnPnl= new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JPanel topBtnPnl = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+     JButton btn= new JButton("Genera Archivo");
+     JTextField txtF=new JTextField(" ",5);
+     
+     
+     btn.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+     
+       
+            JFileChooser c = new JFileChooser();
+      //disableTextField(c);
+      c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      int rVal = c.showOpenDialog(null);
+      
+       if (rVal == JFileChooser.APPROVE_OPTION) {
+    
+      filename.setText(c.getSelectedFile().getName());
+     
+        // disableTextField(c);
+
+ dir.setText(c.getCurrentDirectory().toString());
+         System.out.println(filename.getText());
+        System.out.println(dir.getText());// TODO add your handling code here:
+        String filepath=dir.getText()+"\\"+filename.getText();
+          
+               try {
+            transactionMannager.exportarRegistrosEnVariable( listRegDiff,filepath,"Diff-Liquidos-TR"+label+"",txtF.getText().trim());
+             JOptionPane.showMessageDialog(null,"Archivo generado correctamente.","Exito",JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al generar archivo.\n "+ ex.toString());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
+              JOptionPane.showMessageDialog(null, "Error al generar archivo.\n "+ ex.toString());
+        }
+       }
+          
+      }
+    });
+     
+      btnPnl.add(new JLabel("Variable Diferencia Montos: "));
+     btnPnl.add(txtF);
+     topBtnPnl.add(btn);
+     btnPnl.add(topBtnPnl, BorderLayout.NORTH);
+    
+     
+     
+      JFrame frame = new JFrame();
     frame.setLayout(new BorderLayout());
-    frame.add(new JScrollPane(tabla));
+    frame.add(new JScrollPane(tabla),BorderLayout.CENTER);
+    frame.add(btnPnl,BorderLayout.SOUTH);
+    
+   // frame.add(btnAddFlight);
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-      
+    //  panel.add(frame);
+     // panel.add(btnAddFlight);
+     // panel.setVisible(true);
        
-        try {
-            transactionMannager.exportarRegistros(listRegDiff,"C:\\Users\\jpierre\\Desktop","transacciones");
-        } catch (IOException ex) {
-            Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ButtonEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
        
        
     }
@@ -119,4 +197,15 @@ public class ButtonEditor extends DefaultCellEditor {
   protected void fireEditingStopped() {
     super.fireEditingStopped();
   }
+
+  public static ButtonEditor getInstance() {
+if(instance == null) {
+instance = new ButtonEditor(new JCheckBox());
 }
+return instance;
+
+  }
+}
+
+
+

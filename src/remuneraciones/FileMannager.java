@@ -231,7 +231,7 @@ public class FileMannager {
    public  void exportarRegistros(List<Registro> registros,String path,String nombreArchivo) throws IOException, FileNotFoundException, ClassNotFoundException{
       
         
-        
+      
         
  java.util.Date utilDate = new java.util.Date();
  DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
@@ -267,9 +267,6 @@ public class FileMannager {
             }
             
             
-            
-            
-            
  
         } catch (Exception e) {
             e.printStackTrace();
@@ -287,6 +284,18 @@ public class FileMannager {
         
 
     }
+   
+   
+    public void exportarRegistrosEnVariable(List<Registro> registros,String path,String nombreArchivo,String variable) throws IOException, FileNotFoundException, ClassNotFoundException{
+       
+        for(Registro reg:registros){
+           reg.setVariable(variable);
+       }
+        
+        
+       exportarRegistros(registros,path,nombreArchivo);
+   } 
+   
 
     private String[] arrayToLowerCase(String[] array) {
          //To change body of generated methods, choose Tools | Templates.

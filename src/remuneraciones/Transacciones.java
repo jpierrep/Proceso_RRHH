@@ -62,8 +62,7 @@ public class Transacciones extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,21 +77,30 @@ public class Transacciones extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Listado de Transacciones Anteriores");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addGap(261, 261, 261)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,6 +142,7 @@ public class Transacciones extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
@@ -142,7 +151,7 @@ public class Transacciones extends javax.swing.JFrame {
      public void llenarTabla(){
     
 
-           String[] titulos={"Nº Transacción","Fecha Datos","Nombre Archivo","Fecha Trans","Proceso","Button"}; 
+           String[] titulos={"Nº Transacción","Fecha Datos","Nombre Archivo","Fecha Trans","Proceso","Accion"}; 
            String[] datos= new String[6]; 
        DefaultTableModel tableModel = new DefaultTableModel(null, titulos); 
          List<Transaccion> listTrans=transactionMannager.getTransacciones(0);
@@ -167,8 +176,8 @@ public class Transacciones extends javax.swing.JFrame {
         }
          
             jTable1.setModel(tableModel);
-             jTable1.getColumn("Button").setCellRenderer(new ButtonRenderer());
-             jTable1.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+             jTable1.getColumn("Accion").setCellRenderer(new ButtonRenderer());
+             jTable1.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
         
      }
     
