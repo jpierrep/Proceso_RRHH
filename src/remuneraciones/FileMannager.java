@@ -41,7 +41,8 @@ public class FileMannager {
     
 
     
-    List<Registro> registros;
+    List<Registro> registrosGlobal;// Contiene todos los registros del archivo
+    List<Registro> registros;   // Se cargaran solo los registros alusivos al mapeo de variables
     String fecha;
     int empresa;
                 
@@ -92,7 +93,7 @@ public class FileMannager {
         }
          
          
-      registros=lista;
+      registrosGlobal=lista;
 }
     
      
@@ -108,7 +109,7 @@ public class FileMannager {
           
        List<Registro> lista= new ArrayList();   
        
-        for(Registro reg: registros){
+        for(Registro reg: registrosGlobal){
             if(indexesConValores.contains(reg.getIndexColumna())){  // solo si tiene Variable asignada se añade a la lista si no no
                 reg.setVariable(mappings[reg.getIndexColumna()]);  // se setea el valor de la variable de acuerdo al mapping y a la columna a la que pertenece
                 lista.add(reg);  // se añaden los registros que tienen variable asignada
@@ -138,7 +139,7 @@ public class FileMannager {
      
     public void setFechaRegistros(){
     
-    for(Registro reg: registros){
+    for(Registro reg: registrosGlobal){
         reg.setFecha(fecha);
     }
     
@@ -154,7 +155,7 @@ public class FileMannager {
     
         public void setEmpresaRegistros(){
     
-    for(Registro reg: registros){
+    for(Registro reg: registrosGlobal){
         reg.setEmpresa(empresa);
     }
     

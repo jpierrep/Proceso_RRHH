@@ -89,7 +89,7 @@ public class ProcessMannager extends FileMannager{
     
     public void añadeDiffRel(){
     
-         
+         List<Registro> regDiff=new ArrayList<>();
         // Por cada registro que viene del archivo (reliq) buscamos en el resultado de las variables
      for(Registro regRel: registros){
          //for(Registro reg: registros){
@@ -97,6 +97,7 @@ public class ProcessMannager extends FileMannager{
           //       Registro regDiferencia=(Registro)functions.deepClone(reg);
                    
            //  }}
+           System.out.println("buscando diff"+regRel.getFicha()+regRel.getVariable());
            
            String variableBuscar=regRel.getFicha()+regRel.getVariable();
            
@@ -109,7 +110,7 @@ public class ProcessMannager extends FileMannager{
                    float nuevoValor= Float.parseFloat(regDiferencia.getValor())+Float.parseFloat(list.get(0).getValor());
                     
                    regDiferencia.setValor(Float.toString(nuevoValor));
-                   registrosDiferencia.add(regDiferencia);
+                   regDiff.add(regDiferencia);
                 
                  }
                
@@ -119,6 +120,8 @@ public class ProcessMannager extends FileMannager{
              
          
      }
+     
+       registrosDiferencia=regDiff;
     
      
                   for(Registro reg:registrosDiferencia){

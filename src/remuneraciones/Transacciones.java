@@ -8,17 +8,9 @@ package remuneraciones;
 import EditorComponents.ButtonRenderer;
 import EditorComponents.ButtonEditor;
 import Model.Transaccion;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
-import java.awt.Color;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JCheckBox;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**

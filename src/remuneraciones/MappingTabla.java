@@ -6,29 +6,18 @@
 package remuneraciones;
 
 
-import Model.Registro;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import Dao.GetData;
-import Dao.Dao;
 
 /**
  *
@@ -42,13 +31,15 @@ public class MappingTabla extends javax.swing.JFrame {
     ProcessMannager processMannager=new ProcessMannager();
     String[] cabeceraArchivo;
     MappingVars mappingVars;
-    String mesForm="01";
-    int añoForm=2017;
-    String fechaForm="01/2017";
-    int empresaForm=0;
+    String mesForm;
+    int añoForm;
+    String fechaForm;
+    int empresaForm;
     String procesoForm;
-     private JTextField filename = new JTextField(), dir = new JTextField();
-     Transacciones transacciones=new Transacciones();
+    private JTextField filename = new JTextField(), dir = new JTextField();
+    String filepath;
+    Transacciones transacciones=new Transacciones();
+    Functions functions= new Functions();
     
     
     
@@ -62,17 +53,13 @@ public class MappingTabla extends javax.swing.JFrame {
         processMannager.cargaRegistros(); // fileMannager lee los registros
         llenarTabla();
         postInit();
-        
-         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enero", "Febrero", "Marzo", "Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"  }));
-       
+                
          java.util.Date utilDate = new java.util.Date();
  //DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
  DateFormat df = new SimpleDateFormat("YYYY-mm-dd");
  String fecha=df.format(utilDate);
  int año=Integer.parseInt(fecha.substring(0,4));
-         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ""+año,""+(año-1),""+(año-2)  }));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "GuardService Seguridad S.A.","GS Tecnologías S.A.","GS Outsourcing S.A.","Inversiones Odin Ltda."  }));
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione Proceso...","Liquidaciones","Reliquidaciones" }));
+
     }
 
     /**
@@ -87,14 +74,12 @@ public class MappingTabla extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        labelTitulo = new javax.swing.JLabel();
+        labelMes = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 303));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -117,14 +102,6 @@ public class MappingTabla extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButton2.setText("Seleccionar Archivo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,58 +116,68 @@ public class MappingTabla extends javax.swing.JFrame {
             }
         });
 
+        labelTitulo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        labelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitulo.setText("Proceso");
+
+        labelMes.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        labelMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelMes.setText("Mes:");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Registros de Muestra Archivo Cargado");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(84, 496, Short.MAX_VALUE)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jButton2)
-                        .addGap(142, 142, 142)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jButton1)
-                .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addComponent(jButton2)
+                .addGap(92, 92, 92)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(24, 24, 24))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
+                    .addComponent(labelMes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelMes)
+                .addGap(41, 41, 41)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(30, 30, 30))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addComponent(jButton1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton3)
-                                    .addComponent(jButton2)))))))
+                            .addComponent(jButton2)
+                            .addComponent(jButton3))
+                        .addGap(21, 21, 21))))
         );
 
         pack();
@@ -222,15 +209,14 @@ public class MappingTabla extends javax.swing.JFrame {
  dir.setText(c.getCurrentDirectory().toString());
          System.out.println(filename.getText());
         System.out.println(dir.getText());// TODO add your handling code here:
-        String filepath=dir.getText()+"\\"+filename.getText();
+         filepath=dir.getText()+"\\"+filename.getText();
           System.out.println(filepath);
         processMannager.Archivo= processMannager.llenarLista(filepath);
       
         processMannager.cargaRegistros(); // fileMannager lee los registros
         llenarTabla();
         postInit();
-          jButton1.setVisible(true);
-        jComboBox4.setVisible(true);
+   
       
       }
      
@@ -251,8 +237,11 @@ public class MappingTabla extends javax.swing.JFrame {
     
     public void postInit()
  {
-     mappingVars=new MappingVars(cabeceraArchivo);
-  mappingVars.button1.addActionListener(new java.awt.event.ActionListener() {
+     //Importante mapear la fecha antes
+     processMannager.setFecha(fechaForm);
+
+    mappingVars=new MappingVars(cabeceraArchivo);
+    mappingVars.button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     mappingVarsButton(evt);
@@ -263,78 +252,6 @@ public class MappingTabla extends javax.swing.JFrame {
                 }
             }
         });
-  
-  
- 
-  jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-              
-			   jComboBox1ActionPerformed(evt);
-			  
-            }
-
-         private void jComboBox1ActionPerformed(ActionEvent evt) {
-    //Año
-
-           añoForm=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-           fechaForm= mesForm +"/"+Integer.toString(añoForm);
-           processMannager.setFecha(fechaForm); //añadimos la fecha a los registros
-           System.out.println("año"+ añoForm);
-         }
-        });
-        
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-			   jComboBox2ActionPerformed(evt);
-		   
-					   
-            }
-
-         private void jComboBox2ActionPerformed(ActionEvent evt) {
- // Mes
-             int mes=jComboBox2.getSelectedIndex()+1; //comienza de 0 aumentamos 1 para que se adapte al real
-           mesForm= mes>=10 ? Integer.toString(mes) : "0"+Integer.toString(mes)   ;  
-           fechaForm=  mesForm +"/"+Integer.toString(añoForm);
-           processMannager.setFecha(fechaForm); //añadimos la fecha a los registros
-             System.out.println("mes"+ mesForm);
-
-
-         }
-        });
-        
-        	jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-             
-				jComboBox3ActionPerformed(evt);
-				
-            }
-
-         private void jComboBox3ActionPerformed(ActionEvent evt) {
-       //Empresa
-             empresaForm=jComboBox3.getSelectedIndex(); //empresa coincide con el nombre
-              processMannager.setEmpresa(empresaForm); //añadimos la fecha a los registros
- System.out.println("empresa"+ empresaForm);
-         }
-        });
-                
-                
-                        	jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-             
-				jComboBox4ActionPerformed(evt);
-				
-            }
-
-         private void jComboBox4ActionPerformed(ActionEvent evt) {
-       //Proceso
-           procesoForm=jComboBox4.getSelectedItem().toString(); //empresa coincide con el nombre
-         //     fileMannager.setEmpresa(empresaForm); //añadimos la fecha a los registros
- System.out.println("proceso "+ procesoForm);
-         }
-        });
- 
- 
  }
     
     
@@ -342,7 +259,7 @@ public class MappingTabla extends javax.swing.JFrame {
        
       String[] texto= mappingVars.getTextFieldValue();
       
-      for (int i = 0; i < 7; i++) {
+      for (int i = 0; i < texto.length; i++) {
           System.out.println("casa"+texto[i]);
       }
       //carga solo las columnas que estan mapeadas
@@ -385,15 +302,9 @@ public class MappingTabla extends javax.swing.JFrame {
              processMannager.añadeDiffRel();
              processMannager.exportarRegistros(processMannager.registrosDiferencia, filepath,"registrosDiferencia");
              processMannager.generaLog(procesoForm,empresaForm,fechaForm,dir.getText(),filename.getText());
-            
-             
-             
-             
+
             }
-      
-      
-      
-      
+
               JOptionPane.showMessageDialog(null,"Archivos generado correctamente.","Exito",JOptionPane.INFORMATION_MESSAGE);
           } catch (IOException ex) {
               Logger.getLogger(MappingTabla.class.getName()).log(Level.SEVERE, null, ex);
@@ -454,21 +365,38 @@ public class MappingTabla extends javax.swing.JFrame {
       */
       
      String[] lineas=processMannager.getLineas();
+       for (String linea:lineas){
+           System.out.println("linea: "+linea);
+       }
      
          
       String[] datos= new String[cabeceraArchivo.length]; 
       
-      tableModel= new DefaultTableModel(null, cabeceraArchivo); 
+      this.tableModel= new DefaultTableModel(null, cabeceraArchivo); 
         for (int i = 1; i <7; i++) { //i=1 porque el primero es header // 7 primeras lineas
          datos=lineas[i].split(";");
-           tableModel.addRow(datos);  
+           this.tableModel.addRow(datos);  
         }
-          jTable1.setModel(tableModel);
+          this.jTable1.setModel(tableModel);
   
           
           
     
 }
+    
+    public void cargaDatosMappingTabla(){
+        
+        
+    processMannager.Archivo= processMannager.llenarLista(filepath);
+      
+    processMannager.cargaRegistros(); 
+     processMannager.setFecha(fechaForm);
+        llenarTabla();
+        labelTitulo.setText("Proceso "+procesoForm+" Empresa "+functions.getNombreEmpresa(empresaForm) );
+        labelMes.setText("Mes: "+fechaForm);
+        postInit();
+        
+    }
     
 
     
@@ -478,11 +406,37 @@ public class MappingTabla extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelMes;
+    private javax.swing.JLabel labelTitulo;
     // End of variables declaration//GEN-END:variables
+
+    public int getAñoForm() {
+        return añoForm;
+    }
+
+    public void setAñoForm(int añoForm) {
+        this.añoForm = añoForm;
+    }
+
+    public String getFechaForm() {
+        return fechaForm;
+    }
+
+    public void setFechaForm(String fechaForm) {
+        this.fechaForm = fechaForm;
+    }
+
+    public int getEmpresaForm() {
+        return empresaForm;
+    }
+
+    public void setEmpresaForm(int empresaForm) {
+        this.empresaForm = empresaForm;
+    }
+
+
+
 }
