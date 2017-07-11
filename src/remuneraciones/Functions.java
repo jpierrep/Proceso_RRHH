@@ -54,5 +54,17 @@ public class Functions {
              
          }
          
+         public boolean IsArrayWhite(String[] array){
+             boolean isWhite=true;
+             for (String var:array){
+                 if(!var.equals("")){
+                     return false;
+                 }
+             }
+             
+             
+             return isWhite;
+         }
+         
          
 }

@@ -22,15 +22,14 @@ public class Transacciones extends javax.swing.JFrame {
     /**
      * Creates new form Transacciones
      */
-    TransactionMannager transactionMannager=new TransactionMannager();
-    
-    
+    TransactionMannager transactionMannager = new TransactionMannager();
+
     public Transacciones() {
-     
-  //       super( "JButtonTable Example" );
-    initComponents();
-    
-    llenarTabla();
+
+        //       super( "JButtonTable Example" );
+        initComponents();
+
+        llenarTabla();
 //    DefaultTableModel dm = new DefaultTableModel();
 //    dm.setDataVector(new Object[][]{{"button 1","foo"},
 //                                    {"button 2","bar"}},
@@ -40,7 +39,6 @@ public class Transacciones extends javax.swing.JFrame {
 //    jTable1.getColumn("Button").setCellRenderer(new ButtonRenderer());
 //    jTable1.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
 
-       
     }
 
     /**
@@ -139,41 +137,36 @@ public class Transacciones extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    public void llenarTabla() {
 
-     public void llenarTabla(){
-    
-
-           String[] titulos={"Nº Transacción","Fecha Datos","Nombre Archivo","Fecha Trans","Proceso","Accion"}; 
-           String[] datos= new String[6]; 
-       DefaultTableModel tableModel = new DefaultTableModel(null, titulos); 
-         List<Transaccion> listTrans=transactionMannager.getTransacciones(0);
-        int i=1;
-        for (Transaccion trans: listTrans){
-            datos[0]=Integer.toString(trans.getIdTransac());
-            datos[1]=trans.getFechaDatos();
-            datos[2]=trans.getNombreArchivo();
+        String[] titulos = {"Nº Transacción", "Fecha Datos", "Nombre Archivo", "Fecha Trans", "Proceso", "Accion"};
+        String[] datos = new String[6];
+        DefaultTableModel tableModel = new DefaultTableModel(null, titulos);
+        List<Transaccion> listTrans = transactionMannager.getTransacciones(0);
+        int i = 1;
+        for (Transaccion trans : listTrans) {
+            datos[0] = Integer.toString(trans.getIdTransac());
+            datos[1] = trans.getFechaDatos();
+            datos[2] = trans.getNombreArchivo();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-          String fechatrans  = dateFormat.format(trans.getFechaTransac());
-            
-            datos[3]= fechatrans;
-            datos[4]= trans.getProceso();
+            String fechatrans = dateFormat.format(trans.getFechaTransac());
+
+            datos[3] = fechatrans;
+            datos[4] = trans.getProceso();
             //datos[5]="boton"+i;
-            datos[5]=Integer.toString(trans.getIdTransac());
-          //  System.out.println("datos"+datos[0]);
-            
-          tableModel.addRow(datos);
-           
+            datos[5] = Integer.toString(trans.getIdTransac());
+            //  System.out.println("datos"+datos[0]);
+
+            tableModel.addRow(datos);
+
             i++;
-            
+
         }
-         
-            jTable1.setModel(tableModel);
-             jTable1.getColumn("Accion").setCellRenderer(new ButtonRenderer());
-             jTable1.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
-        
-     }
-    
-    
-    
-    
+
+        jTable1.setModel(tableModel);
+        jTable1.getColumn("Accion").setCellRenderer(new ButtonRenderer());
+        jTable1.getColumn("Accion").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+    }
+
 }

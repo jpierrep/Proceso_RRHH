@@ -274,7 +274,7 @@ public class GetData extends Dao {
 
             for (Registro reg : listaReg) {
                 stmt.setInt(1, idTransact);
-                stmt.setString(2, Proceso);
+                stmt.setString(2,Proceso);
                 stmt.setString(3, reg.getFecha());
                 stmt.setString(4, reg.getFicha());
                 stmt.setString(5, reg.getVariable());
@@ -395,7 +395,7 @@ public class GetData extends Dao {
                     + "      ,[RUTA_ARCHIVO]\n"
                     + "      ,[PROCESO]\n"
                     + "      ,[USER_ID]\n"
-                    + "  FROM [Inteligencias_transac].[dbo].[RRHH_Transac] where EMP_CODI=" + empresa + "";
+                    + "  FROM [Inteligencias_transac].[dbo].[RRHH_Transac] where EMP_CODI=" + empresa +"and [PROCESO]='Reliquidaciones'  order by [FECHA_TRANSAC] desc";
 
             // System.out.println(queryString);
             rs = stmt.executeQuery(queryString);

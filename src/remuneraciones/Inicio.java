@@ -5,7 +5,6 @@
  */
 package remuneraciones;
 
-
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,35 +18,31 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Inicio extends javax.swing.JFrame {
 
-    
     DefaultTableModel tableModel;
-    String mesForm="01";
-    int añoForm=2017;
-    String fechaForm="01/2017";
-    int empresaForm=0;
+    String mesForm = "01";
+    int añoForm = 2017;
+    String fechaForm = "01/2017";
+    int empresaForm = 0;
     String procesoForm;
-     private JTextField filename = new JTextField(), dir = new JTextField();
-     Transacciones transacciones=new Transacciones();
-     MappingTabla mappingTabla =new MappingTabla();
-      String filepath;
-    
-    
+    private JTextField filename = new JTextField(), dir = new JTextField();
+    Transacciones transacciones = new Transacciones();
+    MappingTabla mappingTabla = new MappingTabla();
+    String filepath;
 
     public Inicio() {
         initComponents();
-     
-        postInit();
-        
- jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enero", "Febrero", "Marzo", "Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"  }));
- java.util.Date utilDate = new java.util.Date();
- //DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
- DateFormat df = new SimpleDateFormat("YYYY-mm-dd");
- String fecha=df.format(utilDate);
- int año=Integer.parseInt(fecha.substring(0,4));
- jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ""+año,""+(año-1),""+(año-2)  }));
- jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "GuardService Seguridad S.A.","GS Tecnologías S.A.","GS Outsourcing S.A.","Inversiones Odin Ltda."  }));
-    }
 
+        postInit();
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}));
+        java.util.Date utilDate = new java.util.Date();
+        //DateFormat df = new SimpleDateFormat("dd-MM-YYYY");
+        DateFormat df = new SimpleDateFormat("YYYY-mm-dd");
+        String fecha = df.format(utilDate);
+        int año = Integer.parseInt(fecha.substring(0, 4));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"" + año, "" + (año - 1), "" + (año - 2)}));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"GuardService Seguridad S.A.", "GS Tecnologías S.A.", "GS Outsourcing S.A.", "Inversiones Odin Ltda."}));
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -170,70 +165,60 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
-         JFileChooser c = new JFileChooser();
- 
-      c.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-      int rVal = c.showOpenDialog(Inicio.this);
-    
-      
-      if (rVal == JFileChooser.APPROVE_OPTION) {
-     filename.setText(c.getSelectedFile().getName());
-     
 
- dir.setText(c.getCurrentDirectory().toString());
-         System.out.println(filename.getText());
-        System.out.println(dir.getText());// TODO add your handling code here:
-         filepath=dir.getText()+"\\"+filename.getText();
-          System.out.println(filepath);
-        
+        JFileChooser c = new JFileChooser();
 
-              this.procesoForm="Reliquidaciones";
-              this.setParametrosMappingTabla();
-            
+        c.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int rVal = c.showOpenDialog(Inicio.this);
+
+        if (rVal == JFileChooser.APPROVE_OPTION) {
+            filename.setText(c.getSelectedFile().getName());
+
+            dir.setText(c.getCurrentDirectory().toString());
+            System.out.println(filename.getText());
+            System.out.println(dir.getText());// TODO add your handling code here:
+            filepath = dir.getText() + "\\" + filename.getText();
+            System.out.println(filepath);
+
+            this.procesoForm = "Reliquidaciones";
+            this.setParametrosMappingTabla();
+
             mappingTabla.cargaDatosMappingTabla();
-   
-             
-                 
-                 mappingTabla.setVisible(true);
-                 
-      }
-                 
-                 
-         /*  String[] textFieldValues=panel.getTextFieldValue();
+
+            mappingTabla.setVisible(true);
+
+        }
+
+        /*  String[] textFieldValues=panel.getTextFieldValue();
            
            for (String valor:textFieldValues){
                System.out.println(valor);
            } */
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      JFileChooser c = new JFileChooser();
-      //disableTextField(c);
-      c.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-      int rVal = c.showOpenDialog(Inicio.this);
-    
-      
-      if (rVal == JFileChooser.APPROVE_OPTION) {
-     filename.setText(c.getSelectedFile().getName());
-     
-        // disableTextField(c);
+        JFileChooser c = new JFileChooser();
+        //disableTextField(c);
+        c.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int rVal = c.showOpenDialog(Inicio.this);
 
- dir.setText(c.getCurrentDirectory().toString());
-         System.out.println(filename.getText());
-        System.out.println(dir.getText());// TODO add your handling code here:
-        String filepath=dir.getText()+"\\"+filename.getText();
-          System.out.println(filepath);
-      
-           
-                 this.procesoForm="Liquidaciones";
-                 this.setParametrosMappingTabla();
-                 mappingTabla.cargaDatosMappingTabla();
-                 mappingTabla.setVisible(true);
-      }
-     
-          
+        if (rVal == JFileChooser.APPROVE_OPTION) {
+            filename.setText(c.getSelectedFile().getName());
+
+            // disableTextField(c);
+            dir.setText(c.getCurrentDirectory().toString());
+            System.out.println(filename.getText());
+            System.out.println(dir.getText());// TODO add your handling code here:
+            String filepath = dir.getText() + "\\" + filename.getText();
+            System.out.println(filepath);
+
+            this.procesoForm = "Liquidaciones";
+            this.setParametrosMappingTabla();
+            mappingTabla.cargaDatosMappingTabla();
+            mappingTabla.setVisible(true);
+        }
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -242,79 +227,68 @@ public class Inicio extends javax.swing.JFrame {
         transacciones.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
- 
-    public void setParametrosMappingTabla(){
-          
-          mappingTabla.añoForm=this.añoForm;
-          mappingTabla.fechaForm=this.fechaForm;
-          mappingTabla.empresaForm=this.empresaForm;
-          mappingTabla.mesForm=this.mesForm;
-          mappingTabla.procesoForm=this.procesoForm;
-          mappingTabla.filepath=this.filepath;
-    
-}
-    
-    public void postInit()
- {
-    
+    public void setParametrosMappingTabla() {
 
- 
-  jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        mappingTabla.añoForm = this.añoForm;
+        mappingTabla.fechaForm = this.fechaForm;
+        mappingTabla.empresaForm = this.empresaForm;
+        mappingTabla.mesForm = this.mesForm;
+        mappingTabla.procesoForm = this.procesoForm;
+        mappingTabla.filepath = this.filepath;
+
+    }
+
+    public void postInit() {
+
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-              
-			   jComboBox1ActionPerformed(evt);
-			  
+
+                jComboBox1ActionPerformed(evt);
+
             }
 
-         private void jComboBox1ActionPerformed(ActionEvent evt) {
-    //Año
+            private void jComboBox1ActionPerformed(ActionEvent evt) {
+                //Año
 
-           añoForm=Integer.parseInt(jComboBox1.getSelectedItem().toString());
-           fechaForm= mesForm +"/"+Integer.toString(añoForm);
-           System.out.println("año"+ añoForm);
-         }
+                añoForm = Integer.parseInt(jComboBox1.getSelectedItem().toString());
+                fechaForm = mesForm + "/" + Integer.toString(añoForm);
+                System.out.println("año" + añoForm);
+            }
         });
-        
+
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-			   jComboBox2ActionPerformed(evt);
-		   
-					   
+                jComboBox2ActionPerformed(evt);
+
             }
 
-         private void jComboBox2ActionPerformed(ActionEvent evt) {
- // Mes
-             int mes=jComboBox2.getSelectedIndex()+1; //comienza de 0 aumentamos 1 para que se adapte al real
-           mesForm= mes>=10 ? Integer.toString(mes) : "0"+Integer.toString(mes)   ;  
-           fechaForm=  mesForm +"/"+Integer.toString(añoForm);
-             System.out.println("mes"+ mesForm);
+            private void jComboBox2ActionPerformed(ActionEvent evt) {
+                // Mes
+                int mes = jComboBox2.getSelectedIndex() + 1; //comienza de 0 aumentamos 1 para que se adapte al real
+                mesForm = mes >= 10 ? Integer.toString(mes) : "0" + Integer.toString(mes);
+                fechaForm = mesForm + "/" + Integer.toString(añoForm);
+                System.out.println("mes" + mesForm);
 
-
-         }
+            }
         });
-        
-        	jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-             
-				jComboBox3ActionPerformed(evt);
-				
+
+                jComboBox3ActionPerformed(evt);
+
             }
 
-         private void jComboBox3ActionPerformed(ActionEvent evt) {
-       //Empresa
-             empresaForm=jComboBox3.getSelectedIndex(); //empresa coincide con el nombre
- System.out.println("empresa"+ empresaForm);
-         }
+            private void jComboBox3ActionPerformed(ActionEvent evt) {
+                //Empresa
+                empresaForm = jComboBox3.getSelectedIndex(); //empresa coincide con el nombre
+                System.out.println("empresa" + empresaForm);
+            }
         });
-                
-                
 
- }
-    
-    
+    }
 
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -347,12 +321,7 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
     }
-    
-    
-    
 
-    
-        
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
