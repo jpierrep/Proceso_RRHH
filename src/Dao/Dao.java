@@ -35,8 +35,7 @@ public class Dao {
             
           
             
-             con = DriverManager.getConnection("jdbc:sqlserver://192.168.100.14;databaseName=Inteligencias", "targit",
-               "targit2015*");
+//linea conexion bd  
              
           
             
